@@ -14,7 +14,9 @@ class ApplicationController: UINavigationController {
         let configuration = WKWebViewConfiguration()
         configuration.userContentController.addScriptMessageHandler(self, name: "turbolinksDemo")
         configuration.processPool = self.webViewProcessPool
-        configuration.applicationNameForUserAgent = "TurbolinksDemo"
+        if #available(iOS 9.0, *) {
+            configuration.applicationNameForUserAgent = "TurbolinksDemo"
+        }
         return configuration
     }()
 

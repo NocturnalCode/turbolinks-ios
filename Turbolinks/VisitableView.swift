@@ -132,12 +132,19 @@ public class VisitableView: UIView {
             screenshot.translatesAutoresizingMaskIntoConstraints = false
             screenshotContainerView.addSubview(screenshot)
             
-            NSLayoutConstraint.activateConstraints([
-                screenshot.centerXAnchor.constraintEqualToAnchor(screenshotContainerView.centerXAnchor),
-                screenshot.topAnchor.constraintEqualToAnchor(screenshotContainerView.topAnchor),
-                screenshot.widthAnchor.constraintEqualToConstant(screenshot.bounds.size.width),
-                screenshot.heightAnchor.constraintEqualToConstant(screenshot.bounds.size.height)
-            ])
+            if #available(iOS 9.0, *) {
+                NSLayoutConstraint.activateConstraints([
+                    screenshot.centerXAnchor.constraintEqualToAnchor(screenshotContainerView.centerXAnchor),
+                    screenshot.topAnchor.constraintEqualToAnchor(screenshotContainerView.topAnchor),
+                    screenshot.widthAnchor.constraintEqualToConstant(screenshot.bounds.size.width),
+                    screenshot.heightAnchor.constraintEqualToConstant(screenshot.bounds.size.height)
+                    ])
+            } else {
+                NSLayoutConstraint.activateConstraints(
+                    NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: [], metrics: nil, views: [ "view": screenshot ]) +
+                    NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: [], metrics: nil, views: [ "view": screenshot ])
+                    )
+            }
 
             screenshotView = screenshot
         }
